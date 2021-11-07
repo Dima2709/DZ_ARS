@@ -112,7 +112,7 @@ class data:
 
         self.df = pd.read_csv(self.df)
 
-        # Редактирование колонки release_year:
+    # Редактирование колонки release_year:
 
         for i in range(len(self.df['release_year'])):
             mass = []
@@ -122,8 +122,8 @@ class data:
             self.df['release_year'][i] = int(''.join(mass))
 
 
-        # 1. У какого фильма из списка самый большой бюджет?
-        # 2. Какой из фильмов самый длительный (в минутах)?
+    # 1. У какого фильма из списка самый большой бюджет?
+    # 2. Какой из фильмов самый длительный (в минутах)?
 
     def max(self, arg):
         self.arg = arg
@@ -131,7 +131,7 @@ class data:
             if self.df[arg][i] == self.df[arg].max():
                 print(self.df.iloc[i])
 
-        # 3. Какой из фильмов самый короткий(в минутах)?
+    # 3. Какой из фильмов самый короткий(в минутах)?
 
     def min(self,arg):
         self.arg = arg
@@ -139,13 +139,13 @@ class data:
             if self.df[arg][i] == self.df[arg].min():
               print(self.df.iloc[i])
 
-        # 4. Какова средняя длительность фильмов?
+    # 4. Какова средняя длительность фильмов?
 
     def avg(self,arg):
         self.arg = arg
         print(self.df[arg].sum()/self.df[arg].count())
 
-        # 5. Каково медианное значение длительности фильмов?
+    # 5. Каково медианное значение длительности фильмов?
 
     def med(self,arg):
         self.arg = arg
@@ -156,8 +156,8 @@ class data:
             a = self.df[arg].sort_values()
             print(a.iloc[int(len(a) / 2 + 1)])
 
-        # 6. Какой самый прибыльный фильм?
-        # 7. Какой фильм самый убыточный?
+    # 6. Какой самый прибыльный фильм?
+    # 7. Какой фильм самый убыточный?
 
     def profit(self):
         self.df['profit'] = self.df['revenue'] - self.df['budget']
@@ -166,7 +166,7 @@ class data:
 
         the.min('profit')
 
-        #8. У скольких фильмов из датасета объем сборов оказался выше бюджета?
+    #8. У скольких фильмов из датасета объем сборов оказался выше бюджета?
 
     def count_dif(self):
         count = 0
@@ -209,6 +209,27 @@ class data:
 
     #12. Фильмы какого жанра чаще всего становятся прибыльными?
 
+    def genre_profit(self):
+
+        self.df['profit'] = self.df['revenue'] - self.df['budget']
+        mass1 = []
+        mass2 = []
+        for l in range(len(self.df['profit'])):
+            if self.df['profit'][l] > 0:
+                mass1.append(self.df['genres'][l].split('|'))
+        for i in mass1:
+            for j in i:
+                mass2.append(j)
+        count = Counter(mass2)
+        print([i for i in count.keys()][[count[i] for i in count.keys()].index(max(count[i] for i in count.keys()))])
+
+    #13. У какого режиссера самые большие суммарные кассовые сбооры?
+
+
+
+
+
+
 
 the = data('data1.csv')
 # the.max('runtime')
@@ -220,3 +241,4 @@ the = data('data1.csv')
 #the.max_profit_years(2008)
 #the.low_profit_years(2012, 2014)
 #the.genre_max()
+#the.genre_profit()

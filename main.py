@@ -1,24 +1,24 @@
 import csv
 import pandas as pd
 import numpy as np
+from collections import Counter
 
 #    1) открываем файл
 
 # with open('movie_bd_v5.csv') as file:
 #     data = file.read()
 
-#    2) Находим общее, " "tt ", " ;;;;;;; ", в обоих случаях, работают не на весь объем информации. Можно попробовать
+#    2) Находим общее, " "tt ", " ;;;;;;; ", в обоих случаях, работают не на весь объем информации.
 
 # data = data.split('"tt')
 # data_qwe = []
-# d = []
-# e = []
-# e_new = []
+
 # for i in data:
 #     data_qwe.append(i.split(';;;;;;;'))
 
 #    3) Сплитим по запятым
 
+# d = []
 # for i in data_qwe:
 #     mass = []
 #     for j in i:
@@ -28,22 +28,24 @@ import numpy as np
 
 #   4) убираем пустые массивы
 
+# e = []
 # for i in d:
 #     if len(i) > 2:
 #         e.append(i)
 
 #   5) Проблемная зона, там " ;;;;;;; " стоят между значениями строки
 
+# e_new = []
 # for i in e[:84]:
 #     e_new.append(i)
 # e1 = e[84] + e[85]
 # e_new.append(e1)
 # for i in e[86:]:
 #     e_new.append(i)
-# qwerty = []
 
 #   6) Убираем первые 3 и 3 последних столбца, там проблем не заметил
 
+# qwerty = []
 # for i in e_new:
 #     mass = []
 #     for j in i[3:-3]:
@@ -110,18 +112,14 @@ class data:
 
         self.df = pd.read_csv(self.df)
 
-        # !) редактирования ID, 
+        # Редактирование колонки release_year:
 
-        # for i in range(len(self.df['imdb_id'])):
-        #     mass = []
-        #     for j in self.df['imdb_id'][i]:
-        #         if j.isdigit():
-        #             mass.append(j)
-        #     mass = ''.join(mass)
-        #     if len(mass) > 0:
-        #         self.df['imdb_id'][i] = mass[0]
-        #     else:
-        #         self.df['imdb_id'][i] = np.NaN
+        for i in range(len(self.df['release_year'])):
+            mass = []
+            for j in self.df['release_year'][i]:
+                if j.isdigit():
+                    mass.append(j)
+            self.df['release_year'][i] = int(''.join(mass))
 
 
         # 1. У какого фильма из списка самый большой бюджет?
@@ -147,7 +145,7 @@ class data:
         self.arg = arg
         print(self.df[arg].sum()/self.df[arg].count())
 
-        #5. Каково медианное значение длительности фильмов?
+        # 5. Каково медианное значение длительности фильмов?
 
     def med(self,arg):
         self.arg = arg
@@ -158,7 +156,58 @@ class data:
             a = self.df[arg].sort_values()
             print(a.iloc[int(len(a) / 2 + 1)])
 
+        # 6. Какой самый прибыльный фильм?
+        # 7. Какой фильм самый убыточный?
 
+    def profit(self):
+        self.df['profit'] = self.df['revenue'] - self.df['budget']
+
+        the.max('profit')
+
+        the.min('profit')
+
+        #8. У скольких фильмов из датасета объем сборов оказался выше бюджета?
+
+    def count_dif(self):
+        count = 0
+        for i in range(len(self.df['budget'])):
+            if self.df['budget'][i] < self.df['revenue'][i]:
+                count +=1
+        print(count)
+
+    #9. Какой фильм оказался самым кассовым в 2008 году?
+
+    def max_profit_years(self,arg):
+        self.arg = arg
+        self.df['profit'] = self.df[(self.df.release_year == arg)]['revenue'] - self.df[(self.df.release_year == arg)]['budget']
+        for i in range(len(self.df['profit'])):
+            if self.df['profit'][i] == self.df['profit'].max():
+                print(self.df.iloc[i])
+
+    #10. Самый убыточный фильм за период с 2012 по 2014 г. (включительно)?
+
+    def low_profit_years(self,arg,arg1):
+        self.arg = arg
+        self.arg1 = arg1
+        self.df['profit'] = self.df[(self.df.release_year <= arg1) & (self.df.release_year >= arg)]['revenue'] - self.df[(self.df.release_year <= arg1) & (self.df.release_year >= arg)]['budget']
+        for i in range(len(self.df['profit'])):
+            if self.df['profit'][i] == self.df['profit'].min():
+                print(self.df.iloc[i])
+
+    #11. Какого жанра фильмов больше всего?
+
+    def genre_max(self):
+        mass1 = []
+        mass2 = []
+        for i in self.df['genres']:
+            mass1.append(i.split('|'))
+        for i in mass1:
+            for j in i:
+                mass2.append(j)
+        count = Counter(mass2)
+        print ([i for i in count.keys()][[count[i] for i in count.keys()].index(max(count[i] for i in count.keys()))])
+
+    #12. Фильмы какого жанра чаще всего становятся прибыльными?
 
 
 the = data('data1.csv')
@@ -166,3 +215,8 @@ the = data('data1.csv')
 # the.min('runtime')
 #the.avg('runtime')
 #the.med('runtime')
+#the.profit()
+#the.count_dif()
+#the.max_profit_years(2008)
+#the.low_profit_years(2012, 2014)
+#the.genre_max()

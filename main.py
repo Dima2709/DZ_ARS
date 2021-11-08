@@ -358,7 +358,30 @@ class data:
 
     #20. Какой самый прибыльный год для студии Warner Bros?
 
-    
+    def comp_max_year(self,arg):
+        a = {}
+        self.df['profit'] = self.df['revenue'] - self.df['budget']
+        for i in self.df['release_year'].unique():
+            a[i] = []
+        mass = []
+        for i in range(len(self.df['production_companies'])):
+            for j in self.df['production_companies'][i].split('|'):
+                if j == arg:
+                    mass.append(i)
+        for i in mass:
+            mass1 = []
+            a[self.df['release_year'][i]].append(self.df['profit'][i])
+
+        for i in list(a.keys()):
+            a[i] = sum(a[i])
+
+        for i in list(a.keys()):
+            if a[i] == max(a.values()):
+                print(i, ' - ', a[i])
+
+    #21. В каком месяце за все годы суммарно вышло больше всего фильмов?
+
+
 
 
 
@@ -391,4 +414,5 @@ the = data('data1.csv')
 #the.cast_bud()
 #the.gen_cast('Nicolas Cage')
 #the.low_profit_com('Paramount Pictures')
-the.years_prof()
+#the.years_prof()
+the.comp_max_year('Warner Bros.')

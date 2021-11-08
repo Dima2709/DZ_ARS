@@ -244,6 +244,55 @@ class data:
 
     #14. Какой режисер снял больше всего фильмов в стиле Action?
 
+    def dir_genre(self,arg):
+
+        self.arg = arg
+        a = {}
+        for i in self.df['director'].unique():
+            a[i] = 0
+
+        for i in range(len(self.df['genres'])):
+            mass1 = []
+            mass1.append(self.df['genres'][i].split('|'))
+            for j in mass1:
+                for l in j:
+                    if l == arg:
+                        a[self.df['director'][i]] += 1
+        for i in list(a.keys()):
+            if a[i] == max(a.values()):
+                print(i, a[i])
+
+    #15. Фильмы с каким актером принесли самые высокие кассовые сборы в 2012 году?
+
+    def cast_profit(self,arg):
+
+        self.df['profit'] = self.df['revenue'] - self.df['budget']
+        a = {}
+        mass = []
+        mass1 = []
+        for i in self.df[(self.df['release_year'] == arg)]['cast']:
+            mass.append(i)
+
+        for i in mass:
+            for j in i.split('|'):
+                mass1.append(j)
+
+        for i in set(mass1):
+            a[i] = []
+        for i in a.keys():
+            mass = []
+            for j in range(len(self.df[(self.df['release_year'] == arg)]['cast'])):
+                for l in self.df['cast'][j].split('|'):
+                    if l == i:
+                        mass.append(self.df['profit'][j])
+            a[i].append(sum(mass))
+
+        for i in list(a.keys()):
+            if a[i] == max(a.values()):
+                print(i, a[i])
+
+
+
 
 
 
@@ -269,3 +318,5 @@ the = data('data1.csv')
 #the.genre_max()
 #the.genre_profit()
 #the.dir_win()
+#the.dir_genre('Action')
+#the.cast_profit(2013)

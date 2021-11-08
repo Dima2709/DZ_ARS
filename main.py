@@ -370,7 +370,6 @@ class data:
                 if j == arg:
                     mass.append(i)
         for i in mass:
-            mass1 = []
             a[self.df['release_year'][i]].append(self.df['profit'][i])
 
         for i in list(a.keys()):
@@ -472,6 +471,18 @@ class data:
 
     #26. Какие фильмы входят в 1 процент лучших по рейтингу?
 
+    def prec_rait(self,arg):
+        mass = []
+        for i in self.df['vote_average']:
+            mass.append(i)
+        mass.sort()
+        mass1 = mass[-int(len(mass) * arg / 100):]
+        for i in range(len(self.df['vote_average'])):
+            if self.df['vote_average'][i] in mass1:
+                print(self.df.iloc[i])
+
+    #27. Какие актеры чаще всего снимаются в одном фильме вместе?
+
 
 
 
@@ -507,4 +518,5 @@ the = data('data1.csv')
 #the.moun_count_film()
 #the.count_film_moun()
 #the.dir_winter()
-the.comp_len_title()
+#the.comp_len_title()
+#the.prec_rait(1)

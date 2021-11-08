@@ -359,6 +359,7 @@ class data:
     #20. Какой самый прибыльный год для студии Warner Bros?
 
     def comp_max_year(self,arg):
+
         a = {}
         self.df['profit'] = self.df['revenue'] - self.df['budget']
         for i in self.df['release_year'].unique():
@@ -381,11 +382,47 @@ class data:
 
     #21. В каком месяце за все годы суммарно вышло больше всего фильмов?
 
+    def moun_count_film(self):
+        a = {}
+        for i in self.df['release_date']:
+            mass = []
+            for j in i.split('/'):
+                mass.append(j)
+            a[mass[0]] = []
 
+        for i in self.df['release_date']:
+            mass = []
+            for j in i.split('/'):
+                mass.append(j)
+            a[mass[0]].append(1)
+        for i in list(a.keys()):
+            a[i] = sum(a[i])
+        for i in list(a.keys()):
+            if a[i] == max(a.values()):
+                print(i, ' - ', a[i])
 
+    #22. Сколько суммарно вышло фильмов летом? (за июнь, июль, август)
 
+    def count_film_moun(self):
 
+        a = {}
+        for i in self.df['release_date']:
+            mass = []
+            for j in i.split('/'):
+                mass.append(j)
+            a[mass[0]] = []
 
+        for i in self.df['release_date']:
+            mass = []
+            for j in i.split('/'):
+                mass.append(j)
+            a[mass[0]].append(1)
+        for i in list(a.keys()):
+            a[i] = sum(a[i])
+
+        print(a['6'] + a['7'] + a['8'])
+
+    #23. Для какого режиссера зима – самое продуктивное время года?  
 
 
 
@@ -415,4 +452,6 @@ the = data('data1.csv')
 #the.gen_cast('Nicolas Cage')
 #the.low_profit_com('Paramount Pictures')
 #the.years_prof()
-the.comp_max_year('Warner Bros.')
+#the.comp_max_year('Warner Bros.')
+#the.moun_count_film()
+#the.count_film_moun()

@@ -308,11 +308,34 @@ class data:
 
     #17. В фильмах какого жанра больше всего снимался Nicolas Cage?
 
- 
+    def gen_cast(self,arg):
+        mass = []
+        mass1 = []
+        for i in range(len(self.df['cast'])):
+            for j in self.df['cast'][i].split('|'):
+                if j == arg:
+                    mass.append(i)
+        for i in mass:
+            for j in self.df['genres'][i].split('|'):
+                mass1.append(j)
+        count = Counter(mass1)
+        print([i for i in count.keys()][[count[i] for i in count.keys()].index(max(count[i] for i in count.keys()))])
 
+    #18. Самый убыточный фильм от Paramount Pictures
 
+    def low_profit_com(self,arg):
 
+        mass = []
+        mass1 = []
+        self.df['profit'] = self.df['revenue'] - self.df['budget']
+        for i in range(len(self.df['production_companies'])):
+            for j in self.df['production_companies'][i].split('|'):
+                if j == 'Paramount Pictures':
+                    mass.append(self.df['profit'][i])
+                    mass1.append(i)
 
+        a = mass.index(min(mass))
+        print(self.df.iloc[mass1[a]])
 
 
 
@@ -343,3 +366,5 @@ the = data('data1.csv')
 #the.dir_genre('Action')
 #the.cast_profit(2013)
 #the.cast_bud()
+#the.gen_cast('Nicolas Cage')
+#the.low_profit_com('Paramount Pictures')

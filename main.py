@@ -422,7 +422,26 @@ class data:
 
         print(a['6'] + a['7'] + a['8'])
 
-    #23. Для какого режиссера зима – самое продуктивное время года?  
+    #23. Для какого режиссера зима – самое продуктивное время года?
+
+    def dir_winter(self):
+        a = {}
+        for i in self.df['director'].unique():
+            a[i] = 0
+        mass1 = []
+        for i in range(len(self.df['release_date'])):
+            mass = []
+            for j in self.df['release_date'][i].split('/'):
+                mass.append(j)
+            if mass[0] == '12' or mass[0] == '1' or mass[0] == '2':
+                mass1.append(i)
+        for i in mass1:
+            a[self.df['director'][i]] += 1
+        for i in list(a.keys()):
+            if a[i] == max(a.values()):
+                print(i, ' - ', a[i])
+    
+    #24. Какая студия дает самые длинные названия своим фильмам по количеству символов?
 
 
 
@@ -455,3 +474,4 @@ the = data('data1.csv')
 #the.comp_max_year('Warner Bros.')
 #the.moun_count_film()
 #the.count_film_moun()
+the.dir_winter()

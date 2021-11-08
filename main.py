@@ -225,6 +225,32 @@ class data:
 
     #13. У какого режиссера самые большие суммарные кассовые сбооры?
 
+    def dir_win(self):
+
+        self.df['profit'] = self.df['revenue'] - self.df['budget']
+        a = {}
+        for i in self.df['director'].unique():
+            a[i] = []
+        for j in list(a.keys()):
+            mass = []
+            for i in range(len(self.df['director'])):
+                if self.df['director'][i] == j:
+                    mass.append(self.df['profit'][i])
+            a[j].append(sum(mass))
+
+        for i in list(a.keys()):
+            if a[i] == max(a.values()):
+                print(i, a[i])
+
+    #14. Какой режисер снял больше всего фильмов в стиле Action?
+
+
+
+
+
+
+
+
 
 
 
@@ -242,3 +268,4 @@ the = data('data1.csv')
 #the.low_profit_years(2012, 2014)
 #the.genre_max()
 #the.genre_profit()
+#the.dir_win()

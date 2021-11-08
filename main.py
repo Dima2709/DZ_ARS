@@ -291,6 +291,28 @@ class data:
             if a[i] == max(a.values()):
                 print(i, a[i])
 
+    #16. Какой актер снялся в большем количестве высокобюджетных фильмов?
+
+    def cast_bud(self):
+
+        mass = []
+        mass1 = []
+        for i in self.df[(self.df['budget'] > self.df['budget'].sum() / self.df['budget'].count())]['cast']:
+            mass.append(i)
+
+        for i in mass:
+            for j in i.split('|'):
+                mass1.append(j)
+        count = Counter(mass1)
+        print([i for i in count.keys()][[count[i] for i in count.keys()].index(max(count[i] for i in count.keys()))])
+
+    #17. В фильмах какого жанра больше всего снимался Nicolas Cage?
+
+ 
+
+
+
+
 
 
 
@@ -320,3 +342,4 @@ the = data('data1.csv')
 #the.dir_win()
 #the.dir_genre('Action')
 #the.cast_profit(2013)
+#the.cast_bud()

@@ -440,8 +440,40 @@ class data:
         for i in list(a.keys()):
             if a[i] == max(a.values()):
                 print(i, ' - ', a[i])
-    
+
     #24. Какая студия дает самые длинные названия своим фильмам по количеству символов?
+
+    def comp_len_title(self):
+        a = {}
+        mass = []
+        mass1 = []
+        for i in self.df['production_companies']:
+            for j in i.split('|'):
+                mass.append(j)
+            mass1.append(i.split('|'))
+        mass = set(mass)
+        for i in mass:
+            a[i] = []
+
+        mass2 = []
+
+        for i in self.df['original_title']:
+            mass2.append(len(i))
+        for i in range(len(mass1)):
+            for j in mass1[i]:
+                a[j].append(mass2[i])
+        for i in list(a.keys()):
+            a[i] = max(a[i])
+        for i in list(a.keys()):
+            if a[i] == max(a.values()):
+                print(i, ' - ', a[i])
+
+    #25. Описание фильмов какой студии в среднем самые длинные по количеству слов? К сожалению проблема, пока не решена.
+
+    #26. Какие фильмы входят в 1 процент лучших по рейтингу?
+
+
+
 
 
 
@@ -474,4 +506,5 @@ the = data('data1.csv')
 #the.comp_max_year('Warner Bros.')
 #the.moun_count_film()
 #the.count_film_moun()
-the.dir_winter()
+#the.dir_winter()
+the.comp_len_title()

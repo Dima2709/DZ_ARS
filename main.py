@@ -337,6 +337,29 @@ class data:
         a = mass.index(min(mass))
         print(self.df.iloc[mass1[a]])
 
+    #19. Какой год стал самым успешным по суммарным кассовым сборам?
+
+    def years_prof(self):
+
+        a = {}
+        self.df['profit'] = self.df['revenue'] - self.df['budget']
+        for i in self.df['release_year'].unique():
+            a[i] = []
+
+        for i in list(a.keys()):
+            mass = []
+            for j in range(len(self.df['release_year'])):
+                if i == self.df['release_year'][j]:
+                    mass.append(self.df['profit'][j])
+            a[i].append(sum(mass))
+        for i in list(a.keys()):
+            if a[i] == max(a.values()):
+                print(i,' - ', a[i][0])
+
+    #20. Какой самый прибыльный год для студии Warner Bros?
+
+    
+
 
 
 
@@ -368,3 +391,4 @@ the = data('data1.csv')
 #the.cast_bud()
 #the.gen_cast('Nicolas Cage')
 #the.low_profit_com('Paramount Pictures')
+the.years_prof()

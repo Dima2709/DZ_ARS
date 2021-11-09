@@ -108,6 +108,7 @@ from collections import Counter
 class data:
 
     def __init__(self,df):
+
         self.df = df
 
         self.df = pd.read_csv(self.df)
@@ -126,6 +127,7 @@ class data:
     # 2. Какой из фильмов самый длительный (в минутах)?
 
     def max(self, arg):
+
         self.arg = arg
         for i in range(len(self.df[arg])):
             if self.df[arg][i] == self.df[arg].max():
@@ -134,6 +136,7 @@ class data:
     # 3. Какой из фильмов самый короткий(в минутах)?
 
     def min(self,arg):
+
         self.arg = arg
         for i in range(len(self.df[arg])):
             if self.df[arg][i] == self.df[arg].min():
@@ -142,12 +145,14 @@ class data:
     # 4. Какова средняя длительность фильмов?
 
     def avg(self,arg):
+
         self.arg = arg
         print(self.df[arg].sum()/self.df[arg].count())
 
     # 5. Каково медианное значение длительности фильмов?
 
     def med(self,arg):
+
         self.arg = arg
         if len(self.df[arg]) % 2 == 0:
             a = self.df[arg].sort_values()
@@ -160,6 +165,7 @@ class data:
     # 7. Какой фильм самый убыточный?
 
     def profit(self):
+
         self.df['profit'] = self.df['revenue'] - self.df['budget']
 
         the.max('profit')
@@ -169,6 +175,7 @@ class data:
     #8. У скольких фильмов из датасета объем сборов оказался выше бюджета?
 
     def count_dif(self):
+
         count = 0
         for i in range(len(self.df['budget'])):
             if self.df['budget'][i] < self.df['revenue'][i]:
@@ -178,6 +185,7 @@ class data:
     #9. Какой фильм оказался самым кассовым в 2008 году?
 
     def max_profit_years(self,arg):
+
         self.arg = arg
         self.df['profit'] = self.df[(self.df.release_year == arg)]['revenue'] - self.df[(self.df.release_year == arg)]['budget']
         for i in range(len(self.df['profit'])):
@@ -187,6 +195,7 @@ class data:
     #10. Самый убыточный фильм за период с 2012 по 2014 г. (включительно)?
 
     def low_profit_years(self,arg,arg1):
+
         self.arg = arg
         self.arg1 = arg1
         self.df['profit'] = self.df[(self.df.release_year <= arg1) & (self.df.release_year >= arg)]['revenue'] - self.df[(self.df.release_year <= arg1) & (self.df.release_year >= arg)]['budget']
@@ -197,6 +206,7 @@ class data:
     #11. Какого жанра фильмов больше всего?
 
     def genre_max(self):
+
         mass1 = []
         mass2 = []
         for i in self.df['genres']:
@@ -266,6 +276,7 @@ class data:
 
     def cast_profit(self,arg):
 
+        self.arg = arg
         self.df['profit'] = self.df['revenue'] - self.df['budget']
         a = {}
         mass = []
@@ -309,6 +320,7 @@ class data:
     #17. В фильмах какого жанра больше всего снимался Nicolas Cage?
 
     def gen_cast(self,arg):
+
         mass = []
         mass1 = []
         for i in range(len(self.df['cast'])):
@@ -330,7 +342,7 @@ class data:
         self.df['profit'] = self.df['revenue'] - self.df['budget']
         for i in range(len(self.df['production_companies'])):
             for j in self.df['production_companies'][i].split('|'):
-                if j == 'Paramount Pictures':
+                if j == arg:
                     mass.append(self.df['profit'][i])
                     mass1.append(i)
 
@@ -382,6 +394,7 @@ class data:
     #21. В каком месяце за все годы суммарно вышло больше всего фильмов?
 
     def moun_count_film(self):
+
         a = {}
         for i in self.df['release_date']:
             mass = []
@@ -424,6 +437,7 @@ class data:
     #23. Для какого режиссера зима – самое продуктивное время года?
 
     def dir_winter(self):
+
         a = {}
         for i in self.df['director'].unique():
             a[i] = 0
@@ -443,6 +457,7 @@ class data:
     #24. Какая студия дает самые длинные названия своим фильмам по количеству символов?
 
     def comp_len_title(self):
+
         a = {}
         mass = []
         mass1 = []
@@ -469,6 +484,32 @@ class data:
 
     #25. Описание фильмов какой студии в среднем самые длинные по количеству слов? К сожалению проблема, пока не решена. Принцип тот же, что и в задании 24
 
+    def word_metr(self,arg):
+
+        a = {}
+        mass = []
+        mass1 = []
+        for i in self.df['production_companies']:
+            for j in i.split('|'):
+                mass.append(j)
+            mass1.append(i.split('|'))
+        mass = set(mass)
+        for i in mass:
+            a[i] = []
+
+        mass2 = []
+
+        for i in self.df[arg]:
+            mass2.append(len(i.split(' ')))
+        for i in range(len(mass1)):
+            for j in mass1[i]:
+                a[j].append(mass2[i])
+        for i in list(a.keys()):
+            a[i] = max(a[i])
+        for i in list(a.keys()):
+            if a[i] == max(a.values()):
+                print(i, ' - ', a[i])
+
     #26. Какие фильмы входят в 1 процент лучших по рейтингу?
 
     def prec_rait(self,arg):
@@ -489,16 +530,9 @@ class data:
 
 
 
-
-
-
-
-
-
-
 the = data('data1.csv')
-# the.max('runtime')
-# the.min('runtime')
+#the.max('runtime')
+#the.min('runtime')
 #the.avg('runtime')
 #the.med('runtime')
 #the.profit()
@@ -520,3 +554,4 @@ the = data('data1.csv')
 #the.dir_winter()
 #the.comp_len_title()
 #the.prec_rait(1)
+#the.word_metr('original_title')

@@ -5,103 +5,103 @@ from collections import Counter
 
 #    1) открываем файл
 
-with open('movie_bd_v5.csv') as file:
-    data = file.read()
+# with open('movie_bd_v5.csv') as file:
+#     data = file.read()
 
 #    2) Находим общее, " "tt ", " ;;;;;;; ", в обоих случаях, работают не на весь объем информации.
-
-data = data.split('"tt')
-data_qwe = []
-
-for i in data:
-    data_qwe.append(i.split(';;;;;;;'))
+#
+# data = data.split('"tt')
+# data_qwe = []
+#
+# for i in data:
+#     data_qwe.append(i.split(';;;;;;;'))
 
 #    3) Сплитим по запятым
 
-d = []
-for i in data_qwe:
-    mass = []
-    for j in i:
-        mass.append(j.split(','))
-    for c in mass:
-        d.append(c)
+# d = []
+# for i in data_qwe:
+#     mass = []
+#     for j in i:
+#         mass.append(j.split(','))
+#     for c in mass:
+#         d.append(c)
 
 #   4) убираем пустые массивы
 
-e = []
-for i in d:
-    if len(i) > 2:
-        e.append(i)
+# e = []
+# for i in d:
+#     if len(i) > 2:
+#         e.append(i)
 
 #   5) Проблемная зона, там " ;;;;;;; " стоят между значениями строки
-
-e_new = []
-for i in e[:84]:
-    e_new.append(i)
-e1 = e[84] + e[85]
-e_new.append(e1)
-for i in e[86:]:
-    e_new.append(i)
+#
+# e_new = []
+# for i in e[:84]:
+#     e_new.append(i)
+# e1 = e[84] + e[85]
+# e_new.append(e1)
+# for i in e[86:]:
+#     e_new.append(i)
 
 #   6) Убираем первые 3 и 3 последних столбца, там проблем не заметил
 
-qwerty = []
-for i in e_new:
-    mass = []
-    for j in i[3:-3]:
-        mass.append(j)
-    qwerty.append(mass)
+# qwerty = []
+# for i in e_new:
+#     mass = []
+#     for j in i[3:-3]:
+#         mass.append(j)
+#     qwerty.append(mass)
 
-#   7) готовим колонки - runtime, genre, production_companies, a = индексы, проблемных зон, там стоят запятые в колонке production_companies.(нужно написать алгоритм по получению этих индексов.
+#   7) готовим колонки - runtime, genre, production_companies, a = индексы, проблемных зон, там стоят запятые в колонке production_companies(нужно написать алгоритм по получению этих индексов).
 
-a = [219, 221, 271,289,372,410,471,489,511,559,592,607,608,673,741,755,862,877,885,971,1015,1100,1258,1452,1522,1541,1567,1686,1709,1731,1792,1831]
-run_genre_comp = []
-for i in range(len(qwerty)):
-    if i in a:
-        q = []
-        q.append(','.join(qwerty[i][-4:-2]))
-        q = q[0].split(',')
-        q.append(' '.join(qwerty[i][-2:]))
-        run_genre_comp. append(q)
-    else:
-        run_genre_comp.append(qwerty[i][-3:])
+# a = [219, 221, 271,289,372,410,471,489,511,559,592,607,608,673,741,755,862,877,885,971,1015,1100,1258,1452,1522,1541,1567,1686,1709,1731,1792,1831]
+# run_genre_comp = []
+# for i in range(len(qwerty)):
+#     if i in a:
+#         q = []
+#         q.append(','.join(qwerty[i][-4:-2]))
+#         q = q[0].split(',')
+#         q.append(' '.join(qwerty[i][-2:]))
+#         run_genre_comp. append(q)
+#     else:
+#         run_genre_comp.append(qwerty[i][-3:])
 
 #   8) Готовим колонки - original_title, cast, director. К сожалению, решение проблемы пока не придумал, в названии стоят запятые, похоже решить можно только вручную и то не понятно, как обнаружить проблему, везде строки.
 
-tit_cast_dir = []
-for i in qwerty:
-    tit_cast_dir.append(i[:3])
+# tit_cast_dir = []
+# for i in qwerty:
+#     tit_cast_dir.append(i[:3])
 
-#   9) Готовим первые 3 колонки, надо почистить id, через isdigit()
+#   9) Готовим первые 3 колонки.
 
-first3=[]
-for i in e_new:
-    mass = []
-    for j in i[:3]:
-        mass.append(j)
-    first3.append(mass)
+# first3=[]
+# for i in e_new:
+#     mass = []
+#     for j in i[:3]:
+#         mass.append(j)
+#     first3.append(mass)
 
-#   10) Готовим последние 3 колонки, до заданий с датой не дошел, может нужно будет мудрить с этой колонкой
+#   10) Готовим последние 3 колонки.
 
-last3 = []
-for i in e_new:
-    mass = []
-    for j in i[-3:]:
-        mass.append(j)
-    last3.append(mass)
+# last3 = []
+# for i in e_new:
+#     mass = []
+#     for j in i[-3:]:
+#         mass.append(j)
+#     last3.append(mass)
 
 #   11) Объединяем все колонки, записываем файл. Без колонок 'tagline', 'overview', в заданиях они не нужны.
 
-for i in range (len(run_genre_comp)):
-    mass = []
-    for j in  range(len(run_genre_comp[i])):
-        mass.append(run_genre_comp[i][j])
-        mass.append(last3[i][j])
-        mass.append(first3[i][j])
-        mass.append(tit_cast_dir[i][j])
-    with open(f"data1.csv", "a", encoding="utf-8") as file:
-             writer = csv.writer(file,delimiter=",", lineterminator='\n')
-             writer.writerow(mass)
+# for i in range (len(run_genre_comp)):
+#     mass = []
+#     for j in  range(len(run_genre_comp[i])):
+#         mass.append(run_genre_comp[i][j])
+#         mass.append(last3[i][j])
+#         mass.append(first3[i][j])
+#         mass.append(tit_cast_dir[i][j])
+#     with open(f"data1.csv", "a", encoding="utf-8") as file:
+#              writer = csv.writer(file,delimiter=",", lineterminator='\n')
+#              writer.writerow(mass)
 
 # Класс с методами для выполнения заданий.
 
@@ -116,12 +116,8 @@ class data:
     # Редактирование колонки release_year:
 
         for i in range(len(self.df['release_year'])):
-            mass = []
-            for j in self.df['release_year'][i]:
-                if j.isdigit():
-                    mass.append(j)
+            mass = [j for j in self.df['release_year'][i] if j.isdigit()]
             self.df['release_year'][i] = int(''.join(mass))
-
 
     # 1. У какого фильма из списка самый большой бюджет?
     # 2. Какой из фильмов самый длительный (в минутах)?
@@ -524,6 +520,127 @@ class data:
 
     #27. Какие актеры чаще всего снимаются в одном фильме вместе?
 
+    def cast_tog(self):
+
+        mass = []
+        mass2 = []
+        for i in self.df['cast']:
+            mass.append(i.split('|'))
+
+        for i in range(len(mass)):
+
+            if len(mass[i]) == 3:
+                mass2.append(mass[i])
+                count = 0
+                for l in range(3):
+                    for j in range(1, 3):
+                        if count == 0:
+                            mass2.append([mass[i][l], mass[i][j]])
+                            count += 1
+                        elif count == 1:
+                            mass2.append([mass[i][l], mass[i][j]])
+                            mass2.append([mass[i][1], mass[i][2]])
+                            count += 1
+
+            elif len(mass[i]) == 4:
+                mass2.append(mass[i])
+                count = 0
+                for o in range(4):
+                    for j in range(1, 4):
+                        for k in range(2, 4):
+                            if o == 0:
+                                if count == 0:
+                                    mass2.append([mass[i][o], mass[i][j], mass[i][k]])
+                                    mass2.append([mass[i][o], mass[i][j]])
+                                    count += 1
+                                elif count == 1:
+                                    mass2.append([mass[i][o], mass[i][j], mass[i][k]])
+                                    count += 1
+                                elif count == 3:
+                                    mass2.append([mass[i][o], mass[i][j], mass[i][k]])
+                                    mass2.append([mass[i][o], mass[i][k]])
+                                    count += 1
+                                elif count == 2:
+                                    mass2.append([mass[i][o], mass[i][j]])
+                                    count += 1
+                            elif o == 1:
+                                if count == 4:
+                                    mass2.append([mass[i][o], mass[i][k]])
+                                    count += 1
+                                elif count == 5:
+                                    mass2.append([mass[i][o], mass[i][k]])
+                                    count += 1
+                                elif count == 6:
+                                    count += 1
+                                elif count == 7:
+                                    mass2.append([mass[i][o], mass[i][j], mass[i][k]])
+                                    mass2.append([mass[i][j], mass[i][k]])
+                                    count += 1
+                                elif count == 8:
+                                    break
+            elif len(mass[i]) == 5:
+                count = 0
+                mass2.append(mass[i])
+                for p in range(5):
+                    for j in range(1, 5):
+                        for k in range(2, 5):
+                            for l in range(3, 5):
+                                if p == 0:
+                                    if count == 0:
+                                        mass2.append([mass[i][p], mass[i][j], mass[i][k], mass[i][l]])
+                                        mass2.append([mass[i][p], mass[i][j], mass[i][k]])
+                                        mass2.append([mass[i][p], mass[i][j], mass[i][l]])
+                                        mass2.append([mass[i][p], mass[i][k], mass[i][l]])
+                                        mass2.append([mass[i][p], mass[i][j]])
+                                        mass2.append([mass[i][p], mass[i][k]])
+                                        mass2.append([mass[i][p], mass[i][l]])
+                                        mass2.append([mass[i][j], mass[i][k], mass[i][l]])
+                                        mass2.append([mass[i][j], mass[i][k]])
+                                        mass2.append([mass[i][j], mass[i][l]])
+                                        mass2.append([mass[i][k], mass[i][l]])
+                                        count += 1
+                                    elif count == 1:
+                                        mass2.append([mass[i][p], mass[i][j], mass[i][k], mass[i][l]])
+                                        mass2.append([mass[i][p], mass[i][l]])
+                                        mass2.append([mass[i][j], mass[i][k], mass[i][l]])
+                                        mass2.append([mass[i][j], mass[i][l]])
+                                        mass2.append([mass[i][k], mass[i][l]])
+                                        count += 1
+                                    elif count == 2:
+                                        count += 1
+                                    elif count == 3:
+                                        mass2.append([mass[i][j], mass[i][k], mass[i][l]])
+                                        mass2.append([mass[i][k], mass[i][l]])
+                                        count += 1
+                                    elif count == 4:
+                                        mass2.append([mass[i][p], mass[i][j], mass[i][k], mass[i][l]])
+                                        mass2.append([mass[i][p], mass[i][j], mass[i][k]])
+                                        mass2.append([mass[i][p], mass[i][k], mass[i][l]])
+                                        count += 1
+                                    elif count == 5:
+                                        count += 1
+                                    elif count == 6:
+                                        count += 1
+                                    elif count == 7:
+                                        mass2.append([mass[i][p], mass[i][j], mass[i][l]])
+                                        count += 1
+                                    elif count == 8:
+                                        count += 1
+                                    elif count == 9:
+                                        mass2.append([mass[i][p], mass[i][j], mass[i][k], mass[i][l]])
+                                        mass2.append([mass[i][j], mass[i][k], mass[i][l]])
+                                        count += 1
+                                    elif count == 10:
+                                        mass2.append([mass[i][p], mass[i][j], mass[i][k], mass[i][l]])
+                                        count += 1
+
+                                elif p == 1 and j == 2 and k == 3 and l == 4:
+                                    if count == 11:
+                                        mass2.append([mass[i][p], mass[i][j], mass[i][k], mass[i][l]])
+                                        count += 1
+                                    elif count == 12:
+                                        break
+
 
 
 
@@ -555,3 +672,4 @@ the = data('data1.csv')
 #the.comp_len_title()
 #the.prec_rait(1)
 #the.word_metr('original_title')
+

@@ -143,7 +143,7 @@ class data:
     def avg(self,arg):
 
         self.arg = arg
-        print(self.df[arg].sum()/self.df[arg].count())
+        print('В колонке -', arg,',', 'среднее значение = ', self.df[arg].mean())
 
     # 5. Каково медианное значение длительности фильмов?
 
@@ -151,11 +151,9 @@ class data:
 
         self.arg = arg
         if len(self.df[arg]) % 2 == 0:
-            a = self.df[arg].sort_values()
-            print((a.iloc[len(a)/2]+a.iloc[len(a)/2-1])/2)
+            print((self.df.sort_values(by=arg).iloc[len(self.df.sort_values(by=arg))/2]+self.df.sort_values(by=arg).iloc[len(self.df.sort_values(by=arg))/2-1])/2)
         else:
-            a = self.df[arg].sort_values()
-            print(a.iloc[int(len(a) / 2 + 1)])
+            print(self.df.sort_values(by=arg).iloc[int(len(self.df.sort_values(by=arg)) / 2 + 1)])
 
     # 6. Какой самый прибыльный фильм?
     # 7. Какой фильм самый убыточный?
@@ -522,124 +520,8 @@ class data:
 
     def cast_tog(self):
 
-        mass = []
-        mass2 = []
-        for i in self.df['cast']:
-            mass.append(i.split('|'))
+        print(self.df['cast'].value_counts().index[0], ' - ', self.df['cast'].value_counts().max())
 
-        for i in range(len(mass)):
-
-            if len(mass[i]) == 3:
-                mass2.append(mass[i])
-                count = 0
-                for l in range(3):
-                    for j in range(1, 3):
-                        if count == 0:
-                            mass2.append([mass[i][l], mass[i][j]])
-                            count += 1
-                        elif count == 1:
-                            mass2.append([mass[i][l], mass[i][j]])
-                            mass2.append([mass[i][1], mass[i][2]])
-                            count += 1
-
-            elif len(mass[i]) == 4:
-                mass2.append(mass[i])
-                count = 0
-                for o in range(4):
-                    for j in range(1, 4):
-                        for k in range(2, 4):
-                            if o == 0:
-                                if count == 0:
-                                    mass2.append([mass[i][o], mass[i][j], mass[i][k]])
-                                    mass2.append([mass[i][o], mass[i][j]])
-                                    count += 1
-                                elif count == 1:
-                                    mass2.append([mass[i][o], mass[i][j], mass[i][k]])
-                                    count += 1
-                                elif count == 3:
-                                    mass2.append([mass[i][o], mass[i][j], mass[i][k]])
-                                    mass2.append([mass[i][o], mass[i][k]])
-                                    count += 1
-                                elif count == 2:
-                                    mass2.append([mass[i][o], mass[i][j]])
-                                    count += 1
-                            elif o == 1:
-                                if count == 4:
-                                    mass2.append([mass[i][o], mass[i][k]])
-                                    count += 1
-                                elif count == 5:
-                                    mass2.append([mass[i][o], mass[i][k]])
-                                    count += 1
-                                elif count == 6:
-                                    count += 1
-                                elif count == 7:
-                                    mass2.append([mass[i][o], mass[i][j], mass[i][k]])
-                                    mass2.append([mass[i][j], mass[i][k]])
-                                    count += 1
-                                elif count == 8:
-                                    break
-            elif len(mass[i]) == 5:
-                count = 0
-                mass2.append(mass[i])
-                for p in range(5):
-                    for j in range(1, 5):
-                        for k in range(2, 5):
-                            for l in range(3, 5):
-                                if p == 0:
-                                    if count == 0:
-                                        mass2.append([mass[i][p], mass[i][j], mass[i][k], mass[i][l]])
-                                        mass2.append([mass[i][p], mass[i][j], mass[i][k]])
-                                        mass2.append([mass[i][p], mass[i][j], mass[i][l]])
-                                        mass2.append([mass[i][p], mass[i][k], mass[i][l]])
-                                        mass2.append([mass[i][p], mass[i][j]])
-                                        mass2.append([mass[i][p], mass[i][k]])
-                                        mass2.append([mass[i][p], mass[i][l]])
-                                        mass2.append([mass[i][j], mass[i][k], mass[i][l]])
-                                        mass2.append([mass[i][j], mass[i][k]])
-                                        mass2.append([mass[i][j], mass[i][l]])
-                                        mass2.append([mass[i][k], mass[i][l]])
-                                        count += 1
-                                    elif count == 1:
-                                        mass2.append([mass[i][p], mass[i][j], mass[i][k], mass[i][l]])
-                                        mass2.append([mass[i][p], mass[i][l]])
-                                        mass2.append([mass[i][j], mass[i][k], mass[i][l]])
-                                        mass2.append([mass[i][j], mass[i][l]])
-                                        mass2.append([mass[i][k], mass[i][l]])
-                                        count += 1
-                                    elif count == 2:
-                                        count += 1
-                                    elif count == 3:
-                                        mass2.append([mass[i][j], mass[i][k], mass[i][l]])
-                                        mass2.append([mass[i][k], mass[i][l]])
-                                        count += 1
-                                    elif count == 4:
-                                        mass2.append([mass[i][p], mass[i][j], mass[i][k], mass[i][l]])
-                                        mass2.append([mass[i][p], mass[i][j], mass[i][k]])
-                                        mass2.append([mass[i][p], mass[i][k], mass[i][l]])
-                                        count += 1
-                                    elif count == 5:
-                                        count += 1
-                                    elif count == 6:
-                                        count += 1
-                                    elif count == 7:
-                                        mass2.append([mass[i][p], mass[i][j], mass[i][l]])
-                                        count += 1
-                                    elif count == 8:
-                                        count += 1
-                                    elif count == 9:
-                                        mass2.append([mass[i][p], mass[i][j], mass[i][k], mass[i][l]])
-                                        mass2.append([mass[i][j], mass[i][k], mass[i][l]])
-                                        count += 1
-                                    elif count == 10:
-                                        mass2.append([mass[i][p], mass[i][j], mass[i][k], mass[i][l]])
-                                        count += 1
-
-                                elif p == 1 and j == 2 and k == 3 and l == 4:
-                                    if count == 11:
-                                        mass2.append([mass[i][p], mass[i][j], mass[i][k], mass[i][l]])
-                                        count += 1
-                                    elif count == 12:
-                                        break
 
 
 
@@ -672,4 +554,4 @@ the = data('data1.csv')
 #the.comp_len_title()
 #the.prec_rait(1)
 #the.word_metr('original_title')
-
+the.cast_tog()

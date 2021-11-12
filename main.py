@@ -128,6 +128,7 @@ class data:
         for i in range(len(self.df[arg])):
             if self.df[arg][i] == self.df[arg].max():
                 print(self.df.iloc[i])
+        print('\n''Максимальное значение в колонке',arg, ' - ', self.df[arg].max())
 
     # 3. Какой из фильмов самый короткий(в минутах)?
 
@@ -137,6 +138,7 @@ class data:
         for i in range(len(self.df[arg])):
             if self.df[arg][i] == self.df[arg].min():
               print(self.df.iloc[i])
+        print('\n''Минимальное значение в колонке', arg, ' - ', self.df[arg].min())
 
     # 4. Какова средняя длительность фильмов?
 
@@ -154,6 +156,8 @@ class data:
             print((self.df.sort_values(by=arg).iloc[len(self.df.sort_values(by=arg))/2]+self.df.sort_values(by=arg).iloc[len(self.df.sort_values(by=arg))/2-1])/2)
         else:
             print(self.df.sort_values(by=arg).iloc[int(len(self.df.sort_values(by=arg)) / 2 + 1)])
+
+        print('\n','медианное значение в колонке', arg,' - ',self.df[arg].median())
 
     # 6. Какой самый прибыльный фильм?
     # 7. Какой фильм самый убыточный?
@@ -175,6 +179,7 @@ class data:
             if self.df['budget'][i] < self.df['revenue'][i]:
                 count +=1
         print(count)
+        print('У', self.df['runtime'][(self.df['budget'] < self.df['revenue'])].count(), 'фильмов сборы выше бюджета')
 
     #9. Какой фильм оказался самым кассовым в 2008 году?
 
@@ -185,6 +190,7 @@ class data:
         for i in range(len(self.df['profit'])):
             if self.df['profit'][i] == self.df['profit'].max():
                 print(self.df.iloc[i])
+        print(self.df.loc[(self.df['profit'] == self.df['profit'].max())])
 
     #10. Самый убыточный фильм за период с 2012 по 2014 г. (включительно)?
 
@@ -196,6 +202,7 @@ class data:
         for i in range(len(self.df['profit'])):
             if self.df['profit'][i] == self.df['profit'].min():
                 print(self.df.iloc[i])
+        print(self.df.loc[(self.df['profit'] == self.df['profit'].min())])
 
     #11. Какого жанра фильмов больше всего?
 
@@ -209,7 +216,7 @@ class data:
             for j in i:
                 mass2.append(j)
         count = Counter(mass2)
-        print ([i for i in count.keys()][[count[i] for i in count.keys()].index(max(count[i] for i in count.keys()))])
+        print (count.most_common()[0][0], ' - ', count.most_common()[0][1])
 
     #12. Фильмы какого жанра чаще всего становятся прибыльными?
 
@@ -225,7 +232,7 @@ class data:
             for j in i:
                 mass2.append(j)
         count = Counter(mass2)
-        print([i for i in count.keys()][[count[i] for i in count.keys()].index(max(count[i] for i in count.keys()))])
+        print (count.most_common()[0][0], ' - ', count.most_common()[0][1])
 
     #13. У какого режиссера самые большие суммарные кассовые сбооры?
 
@@ -309,7 +316,7 @@ class data:
             for j in i.split('|'):
                 mass1.append(j)
         count = Counter(mass1)
-        print([i for i in count.keys()][[count[i] for i in count.keys()].index(max(count[i] for i in count.keys()))])
+        print (count.most_common()[0][0], ' - ', count.most_common()[0][1])
 
     #17. В фильмах какого жанра больше всего снимался Nicolas Cage?
 
@@ -325,7 +332,7 @@ class data:
             for j in self.df['genres'][i].split('|'):
                 mass1.append(j)
         count = Counter(mass1)
-        print([i for i in count.keys()][[count[i] for i in count.keys()].index(max(count[i] for i in count.keys()))])
+        print (count.most_common()[0][0], ' - ', count.most_common()[0][1])
 
     #18. Самый убыточный фильм от Paramount Pictures
 
@@ -523,12 +530,6 @@ class data:
         print(self.df['cast'].value_counts().index[0], ' - ', self.df['cast'].value_counts().max())
 
 
-
-
-
-
-
-
 the = data('data1.csv')
 #the.max('runtime')
 #the.min('runtime')
@@ -554,4 +555,4 @@ the = data('data1.csv')
 #the.comp_len_title()
 #the.prec_rait(1)
 #the.word_metr('original_title')
-the.cast_tog()
+#the.cast_tog()

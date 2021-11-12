@@ -5,26 +5,26 @@ from collections import Counter
 
 #    1) открываем файл
 
-# with open('movie_bd_v5.csv') as file:
-#     data = file.read()
+with open('movie_bd_v5.csv') as file:
+    data = file.read()
 
 #    2) Находим общее, " "tt ", " ;;;;;;; ", в обоих случаях, работают не на весь объем информации.
 #
-# data = data.split('"tt')
-# data_qwe = []
-#
-# for i in data:
-#     data_qwe.append(i.split(';;;;;;;'))
+data = data.split('"tt')
+data_qwe = []
+
+for i in data:
+    data_qwe.append(i.split(';;;;;;;'))
 
 #    3) Сплитим по запятым
 
-# d = []
-# for i in data_qwe:
-#     mass = []
-#     for j in i:
-#         mass.append(j.split(','))
-#     for c in mass:
-#         d.append(c)
+d = []
+for i in data_qwe:
+    mass = []
+    for j in i:
+        mass.append(j.split(','))
+    for c in mass:
+        d.append(c)
 
 #   4) убираем пустые массивы
 
@@ -34,7 +34,7 @@ from collections import Counter
 #         e.append(i)
 
 #   5) Проблемная зона, там " ;;;;;;; " стоят между значениями строки
-#
+
 # e_new = []
 # for i in e[:84]:
 #     e_new.append(i)
@@ -68,9 +68,38 @@ from collections import Counter
 
 #   8) Готовим колонки - original_title, cast, director. К сожалению, решение проблемы пока не придумал, в названии стоят запятые, похоже решить можно только вручную и то не понятно, как обнаружить проблему, везде строки.
 
+# c = [206,212,300,482,498,619,844,857,1116,1309,1373,1417,1496,1564,1816,1832,1836]# - внутри названия  1 запятая
+# z = [489] #- запятая после 1 актера
+# l = [219]# -- внутри названия 2 запятые
+# m = [728]
 # tit_cast_dir = []
-# for i in qwerty:
-#     tit_cast_dir.append(i[:3])
+# for i in range(len(qwerty)):
+#     if i in c:
+#         q = []
+#         q.append(','.join(qwerty[i][:2]))
+#         q.append(qwerty[i][2])
+#         q.append(qwerty[i][3])
+#         tit_cast_dir.append(q)
+#     elif i in z:
+#         q = []
+#         q.append(qwerty[i][0])
+#         q.append(''.join(qwerty[i][1:3]))
+#         q.append(qwerty[i][3])
+#         tit_cast_dir.append(q)
+#     elif i in l:
+#         q = []
+#         q.append(','.join(qwerty[i][:4]))
+#         q.append(qwerty[i][4])
+#         q.append(qwerty[i][5])
+#         tit_cast_dir.append(q)
+#     elif i in m:
+#         q = []
+#         q.append(','.join(qwerty[i][:3]))
+#         q.append(qwerty[i][3])
+#         q.append(qwerty[i][4])
+#         tit_cast_dir.append(q)
+#     else:
+#         tit_cast_dir.append(qwerty[i])
 
 #   9) Готовим первые 3 колонки.
 
@@ -115,9 +144,9 @@ class data:
 
     # Редактирование колонки release_year:
 
-        for i in range(len(self.df['release_year'])):
-            mass = [j for j in self.df['release_year'][i] if j.isdigit()]
-            self.df['release_year'][i] = int(''.join(mass))
+        # for i in range(len(self.df['release_year'])):
+        #     mass = [j for j in self.df['release_year'][i] if j.isdigit()]
+        #     self.df['release_year'][i] = int(''.join(mass))
 
     # 1. У какого фильма из списка самый большой бюджет?
     # 2. Какой из фильмов самый длительный (в минутах)?

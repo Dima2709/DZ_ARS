@@ -66,7 +66,7 @@ from collections import Counter
 #     else:
 #         run_genre_comp.append(qwerty[i][-3:])
 
-#   8) Готовим колонки - original_title, cast, director. К сожалению, решение проблемы пока не придумал, в названии стоят запятые, похоже решить можно только вручную и то не понятно, как обнаружить проблему, везде строки.
+#   8) Готовим колонки - original_title, cast, director.
 
 # c = [206,212,300,482,498,619,844,857,1116,1309,1373,1417,1496,1564,1816,1832,1836]
 # z = [489]
@@ -405,17 +405,11 @@ class data:
         a = {}
         self.df['profit'] = self.df['revenue'] - self.df['budget']
         for i in self.df['release_year'].unique():
-            a[i] = []
-        mass = []
+            a[i] = 0
         for i in range(len(self.df['production_companies'])):
             for j in self.df['production_companies'][i].split('|'):
                 if j == arg:
-                    mass.append(i)
-        for i in mass:
-            a[self.df['release_year'][i]].append(self.df['profit'][i])
-
-        for i in list(a.keys()):
-            a[i] = sum(a[i])
+                    a[self.df['release_year'][i]] += self.df['profit'][i]
 
         for i in list(a.keys()):
             if a[i] == max(a.values()):
@@ -489,45 +483,37 @@ class data:
     def comp_len_title(self):
 
         a = {}
-        mass = []
         mass1 = []
         for i in self.df['production_companies']:
             for j in i.split('|'):
-                mass.append(j)
+                a[j] = []
             mass1.append(i.split('|'))
-        mass = set(mass)
-        for i in mass:
-            a[i] = []
-
         mass2 = []
 
         for i in self.df['original_title']:
-            mass2.append(len(i))
+            mass2.append(len(i.replace(' ','')))
         for i in range(len(mass1)):
             for j in mass1[i]:
                 a[j].append(mass2[i])
+
         for i in list(a.keys()):
-            a[i] = max(a[i])
+            a[i] = sum(a[i])/len(a[i])
+
         for i in list(a.keys()):
             if a[i] == max(a.values()):
                 print(i, ' - ', a[i])
 
-    #25. Описание фильмов какой студии в среднем самые длинные по количеству слов? К сожалению проблема, пока не решена. Принцип тот же, что и в задании 24
+    #25. Описание фильмов какой студии в среднем самые длинные по количеству слов?
 
     def word_metr(self,arg):
 
         a = {}
-        mass = []
+        mass2 = []
         mass1 = []
         for i in self.df['production_companies']:
             for j in i.split('|'):
-                mass.append(j)
+                a[j] = []
             mass1.append(i.split('|'))
-        mass = set(mass)
-        for i in mass:
-            a[i] = []
-
-        mass2 = []
 
         for i in self.df[arg]:
             mass2.append(len(i.split(' ')))
@@ -535,7 +521,7 @@ class data:
             for j in mass1[i]:
                 a[j].append(mass2[i])
         for i in list(a.keys()):
-            a[i] = max(a[i])
+            a[i] = sum(a[i])/len(a[i])
         for i in list(a.keys()):
             if a[i] == max(a.values()):
                 print(i, ' - ', a[i])
